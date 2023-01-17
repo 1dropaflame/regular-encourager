@@ -1,20 +1,26 @@
 package com.dropaflame.encourage;
 
-import com.dropaflame.config.Config;
-import com.dropaflame.encourage.meditate.Quotations;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.dropaflame.encourage.model.Encouragement;
+import com.dropaflame.encourage.service.EncouragementService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class EncouragerController {
-    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-
+    @Autowired
+    EncouragementService encouragementService;
     @GetMapping("/quote")
-    public String quote(@RequestParam("mood") String mood) {
-        Quotations quotations = context.getBean("quotations", Quotations.class);
-        return quotations.getQuotation(mood);
+    public Encouragement quote(@RequestParam("mood") String mood) {
+        return encouragementService.quote(mood);
     }
 
+    @GetMapping("/all-quotes")
+    public List<Encouragement> allQuotes() {
+        return encouragementService.allQuotes();
+    }
 }
+

@@ -1,5 +1,9 @@
 package com.dropaflame.encourage.meditate;
 
+import com.dropaflame.encourage.model.Category;
+import com.dropaflame.encourage.model.Encouragement;
+import com.dropaflame.encourage.model.Tone;
+import com.dropaflame.encourage.model.Topic;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -25,8 +29,7 @@ public class Quotations {
     ArrayList<String> secureInChrist = new ArrayList<>(Arrays.asList(
             "Romans 8:1-2 I am free from condemnation.                                                 ",
             "Romans 8:28 I am assured that God works for my good in all circumstances.                 ",
-            "Romans 8:31-39 I am free from any condemnation brought against me and I cannot be         ",
-            "separated from the love of God.                                                           ",
+            "Romans 8:31-39 I am free from any condemnation brought against me and I cannot be separated from the love of God. ",
             "2 Corinthians 1:21-22 I have been established, anointed and sealed by God.                ",
             "Colossians 3:1-4 I am hidden with Christ in God.                                          ",
             "Philippians 1:6 I am confident that God will complete the good work He started in me.     ",
@@ -44,7 +47,7 @@ public class Quotations {
             "Ephesians 3:12 I may approach God with freedom and confidence.                            ",
             "Philippians 4:13 I can do all things through Christ, who strengthens me.                  "));
     int indexNoAnxiety = 0;
-    ArrayList<String> noAnxiety =
+    ArrayList<String> noAnxietyInChrist =
             new ArrayList<>(Arrays.asList(
                     "Don’t be anxious about anything: Philippians 4:6-7 \"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus\" (NIV).",
                     "Give God your worry: 1 Peter 5:6-7 \" Humble yourselves, therefore, under God’s mighty hand, that he may lift you up in due time. Cast all your anxiety on him because he cares for you \" (NIV).",
@@ -56,7 +59,8 @@ public class Quotations {
 
     }
 
-    public String getQuotation(String mood) {
+    public Encouragement getQuotation(String mood) {
+//        mood = "sdfsds";
         String quote;
         switch (mood) {
             case "rejected",
@@ -65,26 +69,50 @@ public class Quotations {
                     "depressed":
                 System.out.println(indexAcceptedInChrist + " indexAcceptedInChrist");
                 quote = acceptedInChrist.get(indexAcceptedInChrist++ % acceptedInChrist.size());
-                return quote;
+                return new Encouragement(indexAcceptedInChrist, Category.WhoIAmInChrist, Topic.AcceptedInChrist, Tone.Uplifting, quote);
             case "worthless",
                     "failure",
                     "useless":
                 System.out.println(indexSignificantInChrist + " indexSignificantInChrist");
                 quote = significantInChrist.get(indexSignificantInChrist++ % significantInChrist.size());
-                return quote;
+                return new Encouragement(indexSignificantInChrist, Category.WhoIAmInChrist, Topic.SignificantInChrist, Tone.Uplifting, quote);
             case "afraid",
                     "sinned",
                     "suicide":
                 System.out.println(indexSecureInChrist + " indexSecureInChrist");
                 quote = secureInChrist.get(indexSecureInChrist++ % secureInChrist.size());
-                return quote;
+                return new Encouragement(indexSecureInChrist, Category.WhoIAmInChrist, Topic.SecureInChrist, Tone.Uplifting, quote);
             case "worried",
                     "anxiety":
                 System.out.println(indexNoAnxiety + " indexNoAnxiety");
-                quote = noAnxiety.get(indexNoAnxiety++ % noAnxiety.size());
-                return quote;
+                quote = noAnxietyInChrist.get(indexNoAnxiety++ % noAnxietyInChrist.size());
+                return new Encouragement(indexNoAnxiety, Category.WhoIAmInChrist, Topic.NoAnxietyInChrist, Tone.Uplifting, quote);
             default:
-                return "We walk by Faith, not by Sight";
+                return new Encouragement(-1, Category.Default, Topic.Default, Tone.Default, "We walk by Faith, not by Sight");
         }
+    }
+
+    void printSqlInsert() {
+        int i = 0;
+        for(String message : acceptedInChrist) {
+            System.out.format("INSERT INTO Encouragement VALUES(%d,\'%s\',\'%s\',\'%s\',\'%s\');\n",i, "WhoIAmInChrist", "AcceptedInChrist", "Uplifting", message.trim());
+            i++;
+        }
+        for(String message : significantInChrist) {
+            System.out.format("INSERT INTO Encouragement VALUES(%d,\'%s\',\'%s\',\'%s\',\'%s\');\n",i, "WhoIAmInChrist", "SignificantInChrist", "Uplifting", message.trim());
+            i++;
+        }
+        for(String message : secureInChrist) {
+            System.out.format("INSERT INTO Encouragement VALUES(%d,\'%s\',\'%s\',\'%s\',\'%s\');\n",i, "WhoIAmInChrist", "SecureInChrist", "Uplifting", message.trim());
+            i++;
+        }
+        for(String message : noAnxietyInChrist) {
+            System.out.format("INSERT INTO Encouragement VALUES(%d,\'%s\',\'%s\',\'%s\',\'%s\');\n",i, "WhoIAmInChrist", "NoAnxietyInChrist", "Uplifting", message.trim());
+            i++;
+        }
+    }
+    public static void main(String[] args) {
+        Quotations quotations = new Quotations();
+        quotations.printSqlInsert();
     }
 }
