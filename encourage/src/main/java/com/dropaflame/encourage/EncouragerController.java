@@ -22,5 +22,9 @@ public class EncouragerController {
     public List<Encouragement> allQuotes() {
         return encouragementService.allQuotes();
     }
+    @GetMapping("")
+    public String alive() {
+        return "I am alive, yay!";
+    }
 }
 
