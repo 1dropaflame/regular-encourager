@@ -1,5 +1,6 @@
-# regular-encourager
+```# regular-encourager
 --------startup------------
+
 wsl
 minikube start --driver=docker --cni=calico
 kubectl config view
@@ -7,6 +8,7 @@ kubectl config use-context minikube
 kubectl config set-context --current --namespace=default
 
 -------- regular encourager commands----------
+
 > docker build -t encourage:1.0.0 .
 $ docker tag encourage:1.0.0 1dropaflame/encourage:1.0.0
 $ docker push 1dropaflame/encourage:1.0.0
@@ -17,6 +19,7 @@ $ docker push 1dropaflame/encourage:1.0.0
  $ k exec -it pod/regular-encourager -- bash
 root@regular-encourager:/app#
  curl http://localhost:8080/quote?mood=depressed
+
 ----------------------------
 
 $ kubectl get --watch pods
@@ -55,4 +58,4 @@ http://192.168.49.2:32058/quote?mood=depressed
 
 $ kubectl rollout status deployment regular-encourager
 
-$ k set env deploy regular-encourager GREETING_FROM_ENVIRONMENT_VARIABLE=HOLA!
+$ k set env deploy regular-encourager GREETING_FROM_ENVIRONMENT_VARIABLE=HOLA!```
