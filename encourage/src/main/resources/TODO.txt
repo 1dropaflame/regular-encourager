@@ -1,0 +1,4 @@
+
+TODO.
+1) Use Hibernate and H2 db instead of Quotations using the data in the arraylist.
+

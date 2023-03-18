@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  GREETING_FROM_ENVIRONMENT_VARIABLE: HOLA!
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2023-03-17T02:00:19Z"
+  name: regular-encourager-config
+  namespace: default
+  resourceVersion: "164325"
+  uid: 22f6b521-55b3-421b-80f1-f4619ca89b40
