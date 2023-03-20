@@ -16,6 +16,8 @@ public class EncouragerController {
     EncouragementService encouragementService;
     @Value("${GREETING_FROM_ENVIRONMENT_VARIABLE:default}")
     String greeting;
+    @Value("${FAREWELL_FROM_ENVIRONMENT_VARIABLE:default}")
+    String farewell;
     @GetMapping("/quote")
     public Encouragement quote(@RequestParam("mood") String mood) {
         return encouragementService.quote(mood);
@@ -26,8 +28,12 @@ public class EncouragerController {
         return encouragementService.allQuotes();
     }
     @GetMapping("")
-    public String alive() {
-        return greeting + " I am alive, yay!";
+    public String alive(@Value("${ENCOURAGE_PASSWORD:default-secret}") String passwordFromSecret, @RequestParam(value = "password", defaultValue = "default-input") String passwordFromUser) {
+        if(passwordFromSecret.equals(passwordFromUser)) {
+            return greeting + " Thank you Jesus for I am alive, yay!" + " but now I am busy learning, so " + farewell;
+        } else {
+            return "No entry - you did not provide the password! You provided: " + passwordFromUser + " Next time :) say: " + passwordFromSecret;
+        }
     }
 }
 
