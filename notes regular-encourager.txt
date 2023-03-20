@@ -65,3 +65,45 @@ anil@ANIL-PHILIP-LAPTOP:/mnt/c/Users/Anil/Documents/Projects/regular-encourager$
 anil
 
 
+ 
+
+$kubectl create secret generic PASSWORD --from-literal=password=open --prefix=ENCOURAGE_
+
+        - name: ENCOURAGE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: PASSWORD
+              name: regenc-secret
+			  
+$ k get secrets regenc-secret -o yaml
+apiVersion: v1
+data:
+  PASSWORD: b3Blbg==
+kind: Secret			  
+
+$ kubectl set env --from=secret/regenc-secret --prefix=ENCOURAGE_ deployment/regular-encourager
+$ echo b3Blbg== | base64 -d
+
+    @GetMapping("")
+    public String alive(@Value("${ENCOURAGE_PASSWORD:default-secret}") String passwordFromSecret, @RequestParam(value = "password", defaultValue = "default-input") String passwordFromUser) {
+        if(passwordFromSecret.equals(passwordFromUser)) {
+            return greeting + " Thank you Jesus for I am alive, yay!" + " but now I am busy learning, so " + farewell;
+        } else {
+            return "No entry - you did not provide the password! You provided: " + passwordFromUser + " Next time :) say: " + passwordFromSecret;
+        }
+    }
+	
+	
+$ k exec -it regular-encourager-cfbc859c5-nbb6w -- bash
+root@regular-encourager-cfbc859c5-nbb6w:/app# env
+FAREWELL_FROM_ENVIRONMENT_VARIABLE=Bon Voyage
+ENCOURAGE_PASSWORD=open	
+
+# curl  http://localhost:8080/?password=ope
+
+No entry - you did not provide the password! You provided: ope Next time :) say :open
+
+root@regular-encourager-cfbc859c5-nbb6w:/app# curl  http://localhost:8080/?password=open
+HOLA! Thank you Jesus for I am alive, yay! but now I am busy learning, so Bon Voyage
+root@regular-encourager-cfbc859c5-nbb6w:/app#
+
