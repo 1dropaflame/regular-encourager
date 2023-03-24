@@ -1,10 +1,11 @@
 --------startup------------
 wsl
 minikube start --driver=docker --cni=calico
-kubectl config view
-kubectl config use-context minikube
 kubectl config set-context --current --namespace=default
-
+---
+kubectl config view
+kubectl config current-context
+kubectl config use-context minikube
 -------- regular encourager commands----------
 > docker build -t encourage:1.0.0 .
 $ docker tag encourage:1.0.0 1dropaflame/encourage:1.0.0
@@ -107,3 +108,76 @@ root@regular-encourager-cfbc859c5-nbb6w:/app# curl  http://localhost:8080/?passw
 HOLA! Thank you Jesus for I am alive, yay! but now I am busy learning, so Bon Voyage
 root@regular-encourager-cfbc859c5-nbb6w:/app#
 
+--------------------
+kubectl config set-context --current --namespace=<namespace-name>
+
+
+/tmp/kubectl-edit-1906606855.yaml
+
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: myindex
+      - name: shared-data
+        emptyDir: {}
+		
+		
+		
+		        volumeMounts:
+        - mountPath: /mnt/c/Users/Anil/Documents/Projects/regular-encourager/tmp
+          name: shared-data
+        - mountPath: /mnt/c/Users/Anil/Documents/Projects/regular-encourager
+          name: config-volume
+		  
+		  
+		        containers:
+      - name: sidecar-ui
+        command: ["/bin/sh"]
+        args: ["-c", "cat /usr/share/regular-encourager/shared-data"]
+        volumeMounts:
+        - mountPath: /mnt/c/Users/Anil/Documents/Projects/regular-encourager/tmp
+          name: shared-data
+		  
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: myindex
+        name: config-volume		  
+		
+		@Brooke LigertWood - We attended your ​concert on March 21st in Naperville Illinois
+		The concert was simply ruined for us by the reverb or bass being excessively loud. It is harmful to people with health issues.
+		Loud noises like excessive reverb at a concert can cause atrial fibrillation https://www.healthline.com/health-news/loud-noises-bad-for-your-health#Your-hearing-takes-a-hit
+
+
+I am following your CKAD course and I am confused about Volumes, Mount Path and Volume mounts.
+I have Windows11 with WSL2.
+In  C:\Users\AP\Documents\Projects\regular-encourager>
+I type wsl
+I get
+/mnt/c/Users/AP/Documents/Projects/regular-encourager
+1) Is Windows mounted in Linux or is Linux mounted in Windows?
+2) What is the mount point?
+3) In the kubernetes yaml files, should I put the Windows path or the Linux path?
+4) Is "name" an alias for the mount point?
+----multi container pod-----
+spring boot runs in /app
+therefore if logging.file.name=../tmp/regular-encourager.log
+then the log will be found in /app/tmp
+----------------------------
+@Sander
+I am following your CKAD course and I am confused about Volumes, Mount Path and Volume mounts.
+You asked me to email you but I did not get a reply.
+I have Windows11 with WSL2.
+1) In the kubernetes yaml files, should I put the Windows path or the Linux path?
+2) Is "name" an alias for the mount point?
+
+--------------
+@Sander, All morning I have been experimenting with running different values for the mount point. Only the Windows value /mnt/c/mydir works.for me. Can you please explain how to find the value of the NFS  path as you mentioned?
+
+my app (spring boot) logs are written to
+
+root@regular-encourager-69667cc897-8bjpv:/app# ls -l logs
+total 4
+-rw-r--r-- 1 root root 3301 Mar 24 17:50 quotes.log
+
+----------------
