@@ -24,6 +24,11 @@ public class EncouragerController {
     String greeting;
     @Value("${FAREWELL_FROM_ENVIRONMENT_VARIABLE:default}")
     String farewell;
+    @Value("${shared_data_location}")
+    String sharedDataLocation;
+    @Value("${shared_data_login_status}")
+    String sharedDataLoginStatus;
+
     @GetMapping("/quote")
     public Encouragement quote(@RequestParam("mood") String mood) {
         return encouragementService.quote(mood);
@@ -35,9 +40,8 @@ public class EncouragerController {
     }
     @GetMapping("")
     public String alive(@Value("${ENCOURAGE_PASSWORD:default-secret}") String passwordFromSecret, @RequestParam(value = "password", defaultValue = "default-input") String passwordFromUser) throws IOException {
-        Resource resource = new ClassPathResource("logs/logging_date.txt");
-        File file = resource.getFile();
-        StringBuilder preamble = new StringBuilder();
+       File file = new File(sharedDataLocation,sharedDataLoginStatus);
+       StringBuilder preamble = new StringBuilder();
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String strCurrentLine;
             while ((strCurrentLine = bufferedReader.readLine()) != null) {
@@ -47,7 +51,6 @@ public class EncouragerController {
         } catch(IOException ioException) {
             ioException.printStackTrace();
         }
-
 
         if(passwordFromSecret.equals(passwordFromUser)) {
             return preamble + " \n" + greeting + " Thank you Jesus for I am alive, yay!" + " but now I am busy learning, so " + farewell;

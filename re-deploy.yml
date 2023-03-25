@@ -24,6 +24,15 @@ spec:
       labels:
         app: regular-encourager
     spec:
+      initContainers:
+        - name: init-authorization-check
+          image: busybox
+          command: ["/bin/sh"]
+          args: ["-c", "sleep 10; echo /dev/null > shared_data/login_authorization.txt; echo ALLOWED ReadOnly Access >  shared_data/login_authorization.txt;"]
+          volumeMounts:
+          - name: shared-data
+            mountPath: shared_data
+          
       containers:
       - env:
         - name: GREETING_FROM_ENVIRONMENT_VARIABLE
@@ -38,7 +47,7 @@ spec:
             secretKeyRef:
               key: PASSWORD
               name: regenc-secret
-        image: 1dropaflame/encourage:1.0.9
+        image: 1dropaflame/encourage:1.0.10
         imagePullPolicy: IfNotPresent
         name: encourage
         resources: {}
@@ -48,14 +57,18 @@ spec:
         - mountPath: /mnt/c/Users/Anil/Documents/Projects/regular-encourager
           name: config-volume
         - mountPath: /app/logs
+          name: logs
+        - mountPath: /app/shared_data
           name: shared-data
+
       - name: sidecar
         image: busybox
         command: ["/bin/sh"]
         args: ["-c", "while true; do date >> /pod-data/logging_date.txt; sleep 10;done"]
         volumeMounts:
         - name: shared-data
-          mountPath: /pod-data          
+          mountPath: /pod-data  
+
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -67,5 +80,7 @@ spec:
           name: myindex
         name: config-volume
       - name: shared-data
+        emptyDir: {}  
+      - name: logs
         emptyDir: {}  
 

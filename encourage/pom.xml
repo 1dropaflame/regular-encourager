@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.dropaflame</groupId>
 	<artifactId>encourage</artifactId>
-	<version>0.0.9-SNAPSHOT</version>
+	<version>0.0.10-SNAPSHOT</version>
 	<name>encourage</name>
 	<description>Regular Encourager</description>
 	<properties>
