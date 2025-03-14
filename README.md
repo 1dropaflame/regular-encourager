@@ -8,6 +8,19 @@ It is in development state and I plan to make it fully functional and also to pu
 
 
 ```# regular-encourager
+
+-------- how to install backend-----------
+1. Install Spring Boot on local machine.
+  a) install and run examples like this one https://spring.io/quickstart and also https://spring.io/guides/gs/rest-service
+2. Install MySQL database on your local machine. Use the H2 database.
+3. Download the Github code for this project. Compare the files with the Spring Boot ones and copy over any config files as needed.
+4. Download and install Postman.
+4. Run the client. Use Postman to send the REST requests.
+
+
+
+
+--------IGNORE UNLESS YOU WANT TO PLAY WITH KUBERNETES-------------
 --------startup------------
 
 wsl
